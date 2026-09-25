@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - App Escuela CR</title>
+</head>
+<body>
+    <h1>Registro de personas</h1>
+
+    {% if mensaje %}
+        <p><strong>{{ mensaje }}</strong></p>
+    {% endif %}
+
+    <form method="POST" action="/registrar">
+        <label>Nombre:</label>
+        <input type="text" name="nombre" required><br><br>
+
+        <label>Correo:</label>
+        <input type="text" name="correo" required><br><br>
+
+        <label>Tipo de persona:</label>
+        <select name="tipo" id="tipo" onchange="mostrarCampo()">
+            <option value="estudiante">Estudiante</option>
+            <option value="docente">Docente</option>
+        </select><br><br>
+
+        <div id="campo_estudiante">
+            <label>Carné:</label>
+            <input type="text" name="carnet"><br><br>
+        </div>
+
+        <div id="campo_docente" style="display:none;">
+            <label>Lector biométrico:</label>
+            <input type="text" name="lector_biometrico"><br><br>
+        </div>
+
+        <button type="submit">Registrar</button>
+    </form>
+
+    <h2>Personas registradas</h2>
+    <ul>
+        {% for usuario in usuarios %}
+            <li>
+                {{ usuario.tipo }} - {{ usuario.nombre }} ({{ usuario.correo }})
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        function mostrarCampo() {
+            const tipo = document.getElementById('tipo').value;
+            document.getElementById('campo_estudiante').style.display =
+                tipo === 'estudiante' ? 'block' : 'none';
+            document.getElementById('campo_docente').style.display =
+                tipo === 'docente' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
